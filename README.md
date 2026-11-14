@@ -1,8 +1,13 @@
-# 闲鱼自动化 · 主控仓
+# 闲鱼自动化 · Xianyu Auto Listing
+
+> **输一句「城市 明星」，自动出图、算标题/分类/规格，发布到你的闲鱼店铺。**
+> **One line in, one listing out** — type `广州 王嘉尔`, get a published listing on Xianyu (Goofish).
+>
+> 📦 **下载完整包**（含三个依赖仓）：<https://achun1107.github.io/xianyu-project/>
+> 📘 **安装说明**（学员 & AI agent）：<https://docs.hympro.cn/16-xianyu-install>
+> 🤖 **给 agent 的逐步装机任务书**：<https://docs.hympro.cn/16b-xianyu-install-agent>
 
 把闲鱼「代拍商品上架」这件事做成一条命令的自动化工具。
-
-输入 **`广州 王嘉尔`**，它自己完成：选品 → 出主图 → 写文案 → 填规格 → 发布 → 记录。
 
 ---
 
@@ -40,8 +45,26 @@
 git clone <this repo>
 cd xianyu-achun
 # 不需要 npm install —— 核心代码零第三方依赖，全是 Node 内置模块
-node tools/verify-student-view.js    # 28 项自检
+node tools/verify-student-view.js    # 自检（61 项 / 22 组）
 ```
+
+---
+
+## 给 AI agent / For AI agents
+
+**装机任务书（四条铁律、逐步骤、验收标准、红线）**：
+
+- **在线版（推荐，不用先下载）**：<https://docs.hympro.cn/16b-xianyu-install-agent>
+- 包内同源文件：`xianyu-achun\学员安装-给学员DSH.md`
+
+**四条铁律**：
+
+1. 标 👤 的步骤（扫码、过滑块、输短信验证码、点浏览器确认）**必须等人**，不要替人做
+2. 每一步**回读验证**，不要拿「命令没报错」当成功
+3. 卡住就停下来问，**把完整原始输出贴出来**，不要只贴最后一行
+4. **不要改 `lib/`**（那是代码不是配置）；配置一律走 `config.local.json` / `service.local.json`
+
+**回报**：跑 `node tools\学员回报.js` —— 校验 / 结构 / 配置 / 预演 / 体检 / 发布痕迹一次收集好，存到桌面 `学员机回报.txt`。
 
 ---
 
@@ -56,7 +79,7 @@ lib/          核心库
   museav.js       出图客户端定位
   user-id.js      当前店铺的闲鱼 userId
 
-tools/        命令行工具（140 个）
+tools/        命令行工具
   store-new.js       建新店（从样板继承）
   store-wizard.js    五步配置向导
   store-login.js     扫码登录
@@ -64,6 +87,7 @@ tools/        命令行工具（140 个）
   store-list.js      全店对照表
   make-base-img.js   出主图底图
   verify-student-view.js  学员视角自检
+  学员回报.js         一键收集装机回报
 
 presets/      店铺样板（新店从这里继承）
 stores/       店铺档案（_template.json 是模板；真实店铺档案不入库）
@@ -109,6 +133,8 @@ skills/       复用的技能包
 | 咨询量上限 4 / 订单量上限 35 | 同上 |
 | 永不碰「擦亮宝贝*」计划 | `tools/ad-*.js` |
 
+**另外四条给学员的红线**（违反会出真事故）：一个闲鱼号只能一台机器 / 别把 `config.local.json`、`service.local.json` 发群里 / 别改 `lib/` / 别手写 JSON。
+
 ---
 
 ## 依赖
@@ -129,6 +155,19 @@ skills/       复用的技能包
   └─ xianyu-monitor/             ← 发布执行
 ```
 
+安装器按「`xianyu-achun` 的上一级 + 固定名字」找另外两个 —— **拖动或改名会让预演报「找不到依赖仓」**。
+
+---
+
+## 更新
+
+```powershell
+# A. 自动（推荐，保留店铺档案 / 登录态 / 图片 / 方案）
+node tools/update.js --apply --from=https://achun1107.github.io/xianyu-project/xianyu-latest.zip
+
+# B. 手动 —— 见 配置手册 1.8 B 方案：先备份六样，再删三个代码目录
+```
+
 ---
 
 ## 已知限制
@@ -140,6 +179,7 @@ skills/       复用的技能包
 | 报错里有 `-9` | 审核中，10–30 分钟转正，**别重复发** |
 | 首次安装 5–15 分钟 | 在下 Chromium 内核 |
 | 8093 空闲 20 分钟回收上下文 | 正常，点「预热浏览器」就回来 |
+| 中台安装码（`-InstallCode`）不可用 | 端点未就绪，手工填配置即可 |
 
 ---
 
@@ -150,8 +190,10 @@ skills/       复用的技能包
 | 学员（第一次） | [学员五步上手](学员五步上手.html) |
 | 学员（查阅） | [发放说明](发放说明-给学员.md) |
 | 学员（排错） | [学员安装任务书](学员安装-给学员DSH.md) |
+| 学员（错误对照） | [学员常见错误速查](学员常见错误速查.md) |
 | 维护者 | [管理员手册](管理员手册-分发包维护.md) |
 | 验收 | [真机首装验证清单](真机首装验证清单.md) |
+| **在线（给 agent）** | <https://docs.hympro.cn/16b-xianyu-install-agent> |
 
 ---
 
@@ -162,3 +204,7 @@ skills/       复用的技能包
 店铺档案（价格策略、素材）、投放记录、账号笔记都留在本地，`.gitignore` 里明确排除。
 
 2026-11-13 曾误把整个工作目录推成公开仓库约 6 分钟，发现后立即改回私有并重建为现在这个干净版本。那次暴露了账号 UUID、登录手机号、中台 key 前缀 —— 没有人 fork，但从此立下这条规矩。
+
+---
+
+<sub>本仓库为学员分发用的公开镜像；私有主仓在 GitLab（`hym-company/xianyu-achun`）。包内容不含 `.git`，也不含任何密钥。</sub>
