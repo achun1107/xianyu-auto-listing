@@ -39,6 +39,27 @@ process.argv.slice(2).forEach((a, i, arr) => {
 });
 const DRY = !!A.dry;
 
+// 【第 253 轮】未知参数给个明确提示。
+//   起因：我第一次调它用了 --apply --store --price --spec --cat --style --tone --budget --bid
+//   —— 这些【一个都不认】（实际只认 --dry / --answers / --answersFile，见 L22-25 用法），
+//   全被静默忽略，跑完 exit0 但档案没写，我还以为是参数生效了只是没落盘。
+//   写档案本来就是默认行为（只有 --dry 才不写），所以连 --apply 也是多余的。
+{
+  const KNOWN = new Set(['dry', 'answers', 'answersFile']);
+  const unknown = Object.keys(A).filter((k) => !KNOWN.has(k));
+  if (unknown.length) {
+    console.log('');
+    console.log('  ⚠️ 这些参数向导不认，已忽略：' + unknown.map((k) => '--' + k).join(' '));
+    console.log('    向导是【一步步问你】的，值不通过参数传。认的只有：');
+    console.log('      --dry                只看会写什么，不落档');
+    console.log('      --answers=a|b|c|…   预设答案（自动化用，| 分隔）');
+    console.log('      --answersFile=路径   从文件读答案');
+    console.log('    写档案是默认行为，不用加 --apply。');
+    console.log('    最省事的办法：用网页 staff-ui 里的「⑤ 配置一家新店」，有表单。');
+    console.log('');
+  }
+}
+
 // ── 输入（TTY 交互 / 管道预设答案 / --answers 参数）──────
 // ⚠️【2026-11-12】网页版调它时，stdin 传中文会被按系统代码页解码成 `??`
 //   （实测：店名变 ??????? ，mkdir 到 publish-assets\???????\底图 直接 ENOENT）。
