@@ -31,7 +31,7 @@
 
 ## 2. 从一个包开始（自己下载）
 
-**下载页（国内直连）**：<https://xiaozhi9501.github.io/xianyu-project/>
+**下载页（国内直连）**：<https://achun1107.github.io/xianyu-project/>
 最新版的直链和 sha256 都印在那一页上。**不要用 GitHub Release 的链接** ——
 `github.com/.../releases/download/...` 会跳到 `release-assets.githubusercontent.com`，
 那个域国内网络连不上（实测 HTTP 000），你会以为包是坏的。

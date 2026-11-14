@@ -1371,6 +1371,27 @@ const check = (name, ok, detail) => {
         miss5.length ? miss5.slice(0, 3).join(' | ') : need.length + ' 项');
     }
 
+    // ⑭之六 学生文档里的下载地址不能是死链（第256 轮抓到的）
+    //   为什么加：`xiaozhi9501.github.io` 这个账号根本不存在（404），但
+    //   学员安装-给学员DSH.md / 给学员的一页说明 / _发学员-转发清单 / 知识库
+    //   四份文档里写死了它 —— 学员和 agent 照着下，第一步就下不动。
+    //   打包脚本早就修了（改成环境变量），文档却没人回头改。
+    {
+      const dead = 'xiaozhi9501';
+      const good = 'achun1107.github.io';
+      const DOCS2 = ['学员安装-给学员DSH.md', '给学员的一页说明.md', '_发学员-转发清单.md',
+        '发放说明-给学员.md', '真机首装验证清单.md', '学员常见错误速查.md', '学员配置手册.md'];
+      const bad6 = [];
+      for (const d of DOCS2) {
+        const p = path.join(achun, d);
+        if (!fs.existsSync(p)) continue;
+        const t = fs.readFileSync(p, 'utf8');
+        if (t.includes(dead)) bad6.push(d + ' 还写着 ' + dead);
+      }
+      check('学生文档里的下载地址不是死链', bad6.length === 0,
+        bad6.length ? bad6.slice(0, 3).join(' | ') : '7 份文档都是 ' + good);
+    }
+
     check('包内 .cmd/.bat/.ps1 的行尾、字符与 BOM', probs.length === 0,
       probs.length ? probs.slice(0, 3).join(' | ') : n + ' 个文件');
   }
