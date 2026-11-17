@@ -347,6 +347,10 @@ function excluded(rel) {
   //   留着 .js 只会让 check-refs 报「指向的脚本不在包里」。
   //   学员文档一处没提（第 212 轮核过），不在 TOOLS_ALLOWED。
   /^wecom-sheet\.js$/,
+  // 【第 257 轮】evolve/ —— 双 Agent 自进化框架（老板的开发工具，18 个文件）。
+  //   第333 轮同步公开仓时它被带进来了，但它依赖 lib/err-class（不在包里）、
+  //   ask-dsh.ps1（开发机工具）—— 进学员包只会让 check-refs 报 5 处运行时报错。
+  /^evolve\//,
   ];
 
   // ── tools/ 下的 .js 走【白名单】而不是黑名单 ──
